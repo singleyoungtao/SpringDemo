@@ -15,6 +15,10 @@ public class BlogEntity {
     private Date pubDate;
     private UserEntity userByUserId;
 
+    public void setPubDate(java.sql.Date pubDate) {
+        this.pubDate = pubDate;
+    }
+
     @Id
     @Column(name = "id", nullable = false)
     public int getId() {
