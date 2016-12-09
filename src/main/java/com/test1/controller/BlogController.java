@@ -66,4 +66,33 @@ public class BlogController {
         return "admin/blogDetail";
     }
 
+    // 修改博文内容 页面
+    @RequestMapping("/admin/blogs/update/{id}")
+    public String updateBlog(@PathVariable("id") int id, ModelMap modelMap) {
+        //
+        BlogEntity blog = blogRepository.findOne(id);
+        List<UserEntity> userList = userRepository.findAll();
+        modelMap.addAttribute("blog", blog);
+        modelMap.addAttribute("userList", userList);
+        return "admin/updateBlog";
+    }
+
+    // 修改博客内容， Post请求
+    @RequestMapping(value = "/admin/blogs/updateP", method = RequestMethod.POST)
+    public String updateBlogP(@ModelAttribute("blogP") BlogEntity blogEntity) {
+        // 更新博客信息
+        blogRepository.updateBlog(blogEntity.getTitle(),blogEntity.getUserByUserId().getId(),
+                blogEntity.getContent(), blogEntity.getPubDate(), blogEntity.getId());
+        blogRepository.flush();
+        return "redirect:/admin/blogs";
+
+    }
+
+    // 删除博客文章
+    @RequestMapping("/admin/blogs/delete/{id}")
+    public String deleteBlog(@PathVariable("id") int id) {
+        blogRepository.delete(id);
+        blogRepository.flush();
+        return "redirect:/admin/blogs";
+    }
 }
